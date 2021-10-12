@@ -43,7 +43,6 @@ def main():
         summary_path=summary_path,
     )
 
-
 def parse_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument("--epochs", type=int, default=constants.EPOCHS)
