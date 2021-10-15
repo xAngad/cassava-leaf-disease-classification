@@ -1,6 +1,7 @@
 import argparse
 import os
 import torch
+import pandas as pd
 
 #lsfjalsdghlksghklghsaklghsadklghas fkldwgasglasgjslkfjsfklas 
 
@@ -30,6 +31,9 @@ def main():
     print("Summary path:", summary_path)
     print("Epochs:", args.epochs)
     print("Batch size:", args.batch_size)
+
+    train_csv = pd.read_csv('cassava-leaf-disease-classification/train.csv')
+    
 
     # Initalize dataset and model. Then train the model!
     train_dataset = StartingDataset()
