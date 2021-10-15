@@ -48,6 +48,9 @@ def starting_train(
 
             # TODO: Backpropagation and gradient descent
 
+            
+
+
             # Periodically evaluate our model + log to Tensorboard
             if step % n_eval == 0:
                 # TODO:
