@@ -28,10 +28,12 @@ class StartingDataset(torch.utils.data.Dataset):
         im = torch.from_numpy(im)
 
         im = im / 255
+
+        im = torch.transpose(im, 0, 2)
         
         label = self.csv_file.iloc[index][1]
 
-        print(im.size())
+        # print(im.size())
 
         return im, label
 
@@ -39,8 +41,8 @@ class StartingDataset(torch.utils.data.Dataset):
         return self.csv_file.shape[0]
 
 
-print("Hello world")
-train_dataset = StartingDataset('../cassava-leaf-disease-classification/train.csv', '../cassava-leaf-disease-classification/train_images')
-inp, lab = train_dataset[261]
-print(inp)
-print(lab)
+# print("Hello world")
+# train_dataset = StartingDataset('../cassava-leaf-disease-classification/train.csv', '../cassava-leaf-disease-classification/train_images')
+# inp, lab = train_dataset[261]
+# print(inp)
+# print(lab)

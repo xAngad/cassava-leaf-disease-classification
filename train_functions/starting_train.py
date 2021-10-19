@@ -5,7 +5,7 @@ import torch.utils.tensorboard
 
 
 def starting_train(
-    train_dataset, val_dataset, model, hyperparameters, n_eval, summary_path
+    train_dataset, val_dataset, model, hyperparameters, n_eval, summary_path, device
 ):
     """
     Trains and evaluates a model.
