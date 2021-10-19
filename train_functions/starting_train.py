@@ -46,24 +46,33 @@ def starting_train(
         for i, batch in enumerate(train_loader):
             print(f"\rIteration {i + 1} of {len(train_loader)} ...", end="")
 
-            # TODO: Backpropagation and gradient descent
+            images, labels = batch
 
-            
+            images = images.to(device)
+            labels = labels.to(device)
 
+            # Forward propogation
+            outputs = model.forward(images)
 
-            # Periodically evaluate our model + log to Tensorboard
-            if step % n_eval == 0:
-                # TODO:
-                # Compute training loss and accuracy.
-                # Log the results to Tensorboard.
+            # Backpropogation with Gradient Descent
+            loss = loss_fn(outputs, labels)
+            loss.backward()
+            optimizer.step()
+            optimizer.zero_grad()
 
-                # TODO:
-                # Compute validation loss and accuracy.
-                # Log the results to Tensorboard.
-                # Don't forget to turn off gradient calculations!
-                evaluate(val_loader, model, loss_fn)
+            # # Periodically evaluate our model + log to Tensorboard
+            # if step % n_eval == 0:
+            #     # TODO:
+            #     # Compute training loss and accuracy.
+            #     # Log the results to Tensorboard.
 
-            step += 1
+            #     # TODO:
+            #     # Compute validation loss and accuracy.
+            #     # Log the results to Tensorboard.
+            #     # Don't forget to turn off gradient calculations!
+            #     evaluate(val_loader, model, loss_fn)
+
+            # step += 1
 
         print()
 
