@@ -2,6 +2,8 @@ import argparse
 import os
 import torch
 import pandas as pd
+import torch.utils.tensorboard
+from torch.utils.tensorboard import SummaryWriter
 
 #lsfjalsdghlksghklghsaklghsadklghas fkldwgasglasgjslkfjsfklas 
 
@@ -41,6 +43,8 @@ def main():
     val_size = len(full_dataset) - train_size
     train_dataset, val_dataset = torch.utils.data.random_split(full_dataset, [train_size, val_size])
     model = StartingNetwork(3, 5).to(device)
+    name = "test run"
+    tf_writer = SummaryWriter(os.path.join('log', name))
     starting_train(
         train_dataset=train_dataset,
         val_dataset=val_dataset,
@@ -48,8 +52,11 @@ def main():
         hyperparameters=hyperparameters,
         n_eval=args.n_eval,
         summary_path=summary_path,
-        device=device
+        device=device,
+        name=name,
+        writer=tf_writer
     )
+    tf_writer.close()
 
 def parse_arguments():
     parser = argparse.ArgumentParser()
