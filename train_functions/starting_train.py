@@ -57,9 +57,8 @@ def starting_train(
         for images, labels in loop:
             # print(f"\rIteration {i + 1} of {len(train_loader)} ...", end="")
 
-            #images = images.to(device)
-            #labels = labels.to(device)
             images = images.to(device)
+            labels = labels.to(device)
 
             # Forward propogation
             outputs = model.forward(images)
