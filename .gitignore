@@ -7,3 +7,7 @@ cassava-leaf-disease-classification/
 cassava-leaf-disease-classification.zip
 cassava-leaf-disease-classification.zip.part
 .DS_Store
+
+log/
+log/
+log
