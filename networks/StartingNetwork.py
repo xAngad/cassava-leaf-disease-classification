@@ -25,24 +25,31 @@ class StartingNetwork(torch.nn.Module):
         self.fc_3 = nn.Linear(4096, 1000)
         self.fc_4 = nn.Linear(1000, output_dim)
 
+        """ Batch normalization layers """
+        self.bn_1 = nn.BatchNorm2d(96)   # after conv1
+        self.bn_2 = nn.BatchNorm2d(256)  # after conv2, conv5
+        self.bn_3 = nn.BatchNorm2d(384)  # after conv3, conv4
+        self.bn_4 = nn.BatchNorm1d(4096) # after fc_1, fc_2
+        self.bn_5 = nn.BatchNorm1d(1000) # after fc_3
+
         """ Other utility layers """
         self.pool = nn.maxPool2d((3, 3), stride=2)
         self.dropout = nn.Dropout(0.5)
 
     def forward(self, x):
         """ Convolution """
-        x = self.pool(F.relu(self.conv1(x)))
-        x = self.pool(F.relu(self.conv2(x)))
-        x = F.relu(self.conv3(x))
-        x = F.relu(self.conv4(x))
-        x = self.pool(F.relu(self.conv5(x)))
+        x = self.pool(F.relu(self.bn_1(self.conv1(x))))
+        x = self.pool(F.relu(self.bn_2(self.conv2(x))))
+        x = F.relu(self.bn_3(self.conv3(x)))
+        x = F.relu(self.bn_3(self.conv4(x)))
+        x = self.pool(F.relu(self.bn_2(self.conv5(x))))
 
         """ Fully-Connected """
         x = torch.reshape(x, (-1, 4 * 4 * 256))
-        x = F.relu(self.fc_1(x))
+        x = F.relu(self.bn_4(self.fc_1(x)))
         x = self.dropout(x)
-        x = F.relu(self.fc_2(x))
+        x = F.relu(self.bn_4(self.fc_2(x)))
         x = self.dropout(x)
-        x = F.relu(self.fc_3(x))
+        x = F.relu(self.bn_5(self.fc_3(x)))
 
         return self.fc_4(x)
