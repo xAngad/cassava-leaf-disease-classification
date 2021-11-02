@@ -20,7 +20,7 @@ class StartingNetwork(torch.nn.Module):
                                 kernel_size=(3, 3), padding=1)
 
         """ Fully-Connected Layers """
-        self.fc_1 = nn.Linear(4 * 4 * 256, 4096)
+        self.fc_1 = nn.Linear(5 * 5 * 256, 4096)
         self.fc_2 = nn.Linear(4096, 4096)
         self.fc_3 = nn.Linear(4096, 1000)
         self.fc_4 = nn.Linear(1000, output_dim)
@@ -33,7 +33,7 @@ class StartingNetwork(torch.nn.Module):
         self.bn_5 = nn.BatchNorm1d(1000) # after fc_3
 
         """ Other utility layers """
-        self.pool = nn.maxPool2d((3, 3), stride=2)
+        self.pool = nn.MaxPool2d((3, 3), stride=2)
         self.dropout = nn.Dropout(0.5)
 
     def forward(self, x):
@@ -45,7 +45,7 @@ class StartingNetwork(torch.nn.Module):
         x = self.pool(F.relu(self.bn_2(self.conv5(x))))
 
         """ Fully-Connected """
-        x = torch.reshape(x, (-1, 4 * 4 * 256))
+        x = torch.reshape(x, (-1, 5 * 5 * 256))
         x = F.relu(self.bn_4(self.fc_1(x)))
         x = self.dropout(x)
         x = F.relu(self.bn_4(self.fc_2(x)))
@@ -53,3 +53,8 @@ class StartingNetwork(torch.nn.Module):
         x = F.relu(self.bn_5(self.fc_3(x)))
 
         return self.fc_4(x)
+
+
+if __name__ == "__main__":
+    model = StartingNetwork(3, 5)
+    print(model)
