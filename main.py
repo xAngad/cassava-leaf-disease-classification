@@ -10,6 +10,7 @@ from torch.utils.tensorboard import SummaryWriter
 import constants
 from datasets.StartingDataset import StartingDataset
 from networks.StartingNetwork import StartingNetwork
+from networks.StartingNetwork import TransferNetwork
 from train_functions.starting_train import starting_train
 
 
@@ -42,7 +43,10 @@ def main():
     train_size = int(0.9 * len(full_dataset))
     val_size = len(full_dataset) - train_size
     train_dataset, val_dataset = torch.utils.data.random_split(full_dataset, [train_size, val_size])
-    model = StartingNetwork(3, 5).to(device)
+
+    #model = StartingNetwork(3, 5).to(device)
+    model = TransferNetwork(3, 5).to(device)
+
     name = "test run"
     tf_writer = SummaryWriter(os.path.join('log', name))
     starting_train(

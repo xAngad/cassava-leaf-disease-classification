@@ -54,7 +54,29 @@ class StartingNetwork(torch.nn.Module):
 
         return self.fc_4(x)
 
+class TransferNetwork(torch.nn.Module):
+    def __init__(self, input_channels, output_dim):
+        super().__init__()
 
-if __name__ == "__main__":
-    model = StartingNetwork(3, 5)
-    print(model)
+        """ Transfer from ResNet """
+        self.model_a = torch.hub.load('pytorch/vision:v0.9.0', 'resnet18', pretrained = True)
+        self.model_a = torch.nn.Sequential(*(list(self.model_a.children())[:-1]))
+
+        """ Fully-Connected Layer """
+        self.fc = nn.Linear(2048, output_dim)
+
+    def forward(self, x):
+        """ ResNet """
+        with torch.no_grad():
+            features = self.model_a(x)
+
+        """ Fully-Connected """
+        prediction = self.fc(features)
+
+        return prediction
+
+
+
+# if __name__ == "__main__":
+#     model = StartingNetwork(3, 5)
+#     print(model)
