@@ -1,5 +1,6 @@
 import torch
 import numpy as np
+from torchvision import transforms
 from PIL import Image
 import pandas as pd
 import os
@@ -30,6 +31,10 @@ class StartingDataset(torch.utils.data.Dataset):
         im = im / 255
 
         im = torch.transpose(im, 0, 2)
+
+        normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                                 std=[0.229, 0.224, 0.225])
+        normalize(im) # convert image to tensor first!
         
         label = self.csv_file.iloc[index][1]
 
