@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import torchvision
 
 
 class StartingNetwork(torch.nn.Module):
@@ -59,11 +60,12 @@ class TransferNetwork(torch.nn.Module):
         super().__init__()
 
         """ Transfer from ResNet """
-        self.model_a = torch.hub.load('pytorch/vision:v0.9.0', 'resnet18', pretrained = True)
-        self.model_a = torch.nn.Sequential(*(list(self.model_a.children())[:-1]))
+        # self.model_a = torch.hub.load('pytorch/vision:v0.9.0', 'resnet18', pretrained = True)
+        self.resnet = torchvision.models.resnet18(pretrained = True)
+        self.model_a = torch.nn.Sequential(*(list(self.resnet.children())[:-1]))
 
         """ Fully-Connected Layer """
-        self.fc = nn.Linear(2048, output_dim)
+        self.fc = nn.Linear(512, output_dim)
 
     def forward(self, x):
         """ ResNet """
@@ -71,6 +73,7 @@ class TransferNetwork(torch.nn.Module):
             features = self.model_a(x)
 
         """ Fully-Connected """
+        features = torch.reshape(features, (-1, 512))
         prediction = self.fc(features)
 
         return prediction
