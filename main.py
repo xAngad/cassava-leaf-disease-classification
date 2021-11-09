@@ -44,7 +44,7 @@ def main():
     val_size = len(full_dataset) - train_size
     train_dataset, val_dataset = torch.utils.data.random_split(full_dataset, [train_size, val_size])
 
-    #model = StartingNetwork(3, 5).to(device)
+    # model = StartingNetwork(3, 5).to(device)
     model = TransferNetwork(3, 5).to(device)
 
     name = "test run"
