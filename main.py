@@ -8,10 +8,10 @@ from torch.utils.tensorboard import SummaryWriter
 
 
 import constants
-from datasets.StartingDataset import StartingDataset
-from networks.StartingNetwork import StartingNetwork
-from networks.StartingNetwork import TransferNetwork
-from train_functions.starting_train import starting_train
+from datasets import StartingDataset
+from networks import StartingNetwork
+from networks import TransferNetwork
+from train import starting_train
 
 
 SUMMARIES_PATH = "training_summaries"
