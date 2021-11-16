@@ -149,4 +149,4 @@ def evaluate(val_loader, model, loss_fn, epoch, device):
 
             loop.set_postfix({"acc:": f"{n_correct / n_total : .03f}", "loss:": f"{loss_sum / n_total : .03f}"})
 
-            return n_correct / n_total, loss_sum / n_total
+        return n_correct / n_total, loss_sum / n_total
