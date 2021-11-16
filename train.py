@@ -33,7 +33,7 @@ def starting_train(
     )
 
     # Initalize optimizer (for gradient descent) and loss function
-    optimizer = optim.Adam(model.parameters(), weight_decay = 0.01)
+    optimizer = optim.Adam(model.parameters(), lr=1e-5, weight_decay = 0.01)
     loss_fn = nn.CrossEntropyLoss()
 
     # Initialize summary writer (for logging)
@@ -90,7 +90,8 @@ def starting_train(
             #     # Log the results to Tensorboard.
             #     # Don't forget to turn off gradient calculations!
             step += 1
-
+        
+        torch.save(model.state_dict(), "model_weights.pth")
         
         test_acc, test_loss = evaluate(val_loader, model, loss_fn, epoch, device)
         best_test_acc = max(test_acc, best_test_acc)
