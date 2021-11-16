@@ -8,7 +8,7 @@ from torch.utils.tensorboard import SummaryWriter
 
 
 import constants
-from datasets import StartingDataset
+from dataset import StartingDataset
 from networks import StartingNetwork
 from networks import TransferNetwork
 from train import starting_train
