@@ -48,7 +48,7 @@ def main():
     name = "test run"
     tf_writer = SummaryWriter(os.path.join('log', name))
 
-    USE_SAVED_MODEL = False
+    USE_SAVED_MODEL = True
 
     if USE_SAVED_MODEL:
         # Load saved state dict to model
