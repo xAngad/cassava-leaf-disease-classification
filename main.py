@@ -11,7 +11,7 @@ import constants
 from dataset import StartingDataset
 from networks import StartingNetwork
 from networks import TransferNetwork
-from train import starting_train
+from train import starting_train, evaluate
 
 
 SUMMARIES_PATH = "training_summaries"
@@ -40,27 +40,45 @@ def main():
 
     # Initalize dataset and model. Then train the model!
     full_dataset = StartingDataset('cassava-leaf-disease-classification/train.csv', 'cassava-leaf-disease-classification/train_images')
-    train_size = int(0.9 * len(full_dataset))
+    train_size = int(0.05 * len(full_dataset))
     val_size = len(full_dataset) - train_size
     train_dataset, val_dataset = torch.utils.data.random_split(full_dataset, [train_size, val_size])
 
-    # model = StartingNetwork(3, 5).to(device)
     model = TransferNetwork(3, 5).to(device)
-
     name = "test run"
     tf_writer = SummaryWriter(os.path.join('log', name))
-    starting_train(
-        train_dataset=train_dataset,
-        val_dataset=val_dataset,
-        model=model,
-        hyperparameters=hyperparameters,
-        n_eval=args.n_eval,
-        summary_path=summary_path,
-        device=device,
-        name=name,
-        writer=tf_writer
-    )
-    tf_writer.close()
+
+    USE_SAVED_MODEL = False
+
+    if USE_SAVED_MODEL:
+        # Load saved state dict to model
+        model.load_state_dict(torch.load('model_weights.pth'))
+
+        # load paramters for evaluation loop
+        val_loader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+        loss_fn = nn.CrossEntropyLoss()
+        epoch = "EVAL_MODE"
+
+        # Evaluate model using saved weights
+        model.eval()
+        acc, loss = evaluate(val_loader, model, loss_fn, epoch, device)
+        print(f"Accuracy: {acc}\t\tLoss: {loss}")
+
+    else:
+        starting_train(
+            train_dataset=train_dataset,
+            val_dataset=val_dataset,
+            model=model,
+            hyperparameters=hyperparameters,
+            n_eval=args.n_eval,
+            summary_path=summary_path,
+            device=device,
+            name=name,
+            writer=tf_writer
+        )
+        tf_writer.close()
+
+    
 
 def parse_arguments():
     parser = argparse.ArgumentParser()
