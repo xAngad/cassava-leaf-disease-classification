@@ -78,6 +78,31 @@ class TransferNetwork(torch.nn.Module):
 
         return prediction
 
+class BuffedTransferNetwork(torch.nn.Module):
+    def __init__(self, input_channels, output_dim):
+        super().__init__()
+
+        self.conv = nn.Conv2d(in_channels=input_channels, out_channels = 3, 
+                                kernel_size=(3, 3), stride = 2)
+
+        """ Transfer from ResNet """
+        # self.model_a = torch.hub.load('pytorch/vision:v0.9.0', 'resnet18', pretrained = True)
+        self.resnet = torchvision.models.resnet18(pretrained = True)
+        self.model_a = torch.nn.Sequential(*(list(self.resnet.children())[:-1]))
+
+        """ Fully-Connected Layer """
+        self.fc = nn.Linear(512, output_dim)
+
+    def forward(self, x):
+        """ ResNet """
+        with torch.no_grad():
+            features = self.model_a(x)
+
+        """ Fully-Connected """
+        features = torch.reshape(features, (-1, 512))
+        prediction = self.fc(features)
+
+        return prediction
 
 
 # if __name__ == "__main__":
