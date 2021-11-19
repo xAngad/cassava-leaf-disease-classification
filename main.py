@@ -60,14 +60,16 @@ def main():
 
         # load paramters for evaluation loop
         batch_size = hyperparameters["batch_size"]
-        val_loader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+        val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=batch_size, shuffle=True)
         loss_fn = nn.CrossEntropyLoss()
         epoch = "EVAL_MODE"
 
         # Evaluate model using saved weights
         model.eval()
         acc, loss = evaluate(val_loader, model, loss_fn, epoch, device)
+        print("======")
         print(f"Accuracy: {acc}\t\tLoss: {loss}")
+        print("======")
 
     else:
         starting_train(
