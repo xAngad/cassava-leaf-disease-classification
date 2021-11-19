@@ -33,7 +33,7 @@ def starting_train(
     )
 
     # Initalize optimizer (for gradient descent) and loss function
-    optimizer = optim.Adam(model.parameters(), lr=1e-5, weight_decay = 0.01)
+    optimizer = optim.Adam(model.parameters(), lr=1e-3, weight_decay = 0.01)
     loss_fn = nn.CrossEntropyLoss()
 
     # Initialize summary writer (for logging)
