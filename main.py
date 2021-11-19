@@ -5,6 +5,10 @@ import pandas as pd
 import torch.utils.tensorboard
 from torch.utils.tensorboard import SummaryWriter
 
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from tqdm import tqdm
 
 
 import constants
@@ -40,7 +44,7 @@ def main():
 
     # Initalize dataset and model. Then train the model!
     full_dataset = StartingDataset('cassava-leaf-disease-classification/train.csv', 'cassava-leaf-disease-classification/train_images')
-    train_size = int(0.05 * len(full_dataset))
+    train_size = int(0.9 * len(full_dataset))
     val_size = len(full_dataset) - train_size
     train_dataset, val_dataset = torch.utils.data.random_split(full_dataset, [train_size, val_size])
 
@@ -55,6 +59,7 @@ def main():
         model.load_state_dict(torch.load('model_weights.pth'))
 
         # load paramters for evaluation loop
+        batch_size = hyperparameters["batch_size"]
         val_loader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
         loss_fn = nn.CrossEntropyLoss()
         epoch = "EVAL_MODE"
