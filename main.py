@@ -46,13 +46,13 @@ def main():
     full_dataset = StartingDataset('cassava-leaf-disease-classification/train.csv', 'cassava-leaf-disease-classification/train_images')
     train_size = int(0.9 * len(full_dataset))
     val_size = len(full_dataset) - train_size
-    train_dataset, val_dataset = torch.utils.data.random_split(full_dataset, [train_size, val_size])
+    train_dataset, val_dataset, dummy_dataset = torch.utils.data.random_split(full_dataset, [train_size, val_size, len(full_dataset) - train_size - val_size])
 
-    model = TransferNetwork(3, 5).to(device)
+    model = StartingNetwork(3, 5).to(device)
     name = "test run"
     tf_writer = SummaryWriter(os.path.join('log', name))
 
-    USE_SAVED_MODEL = True
+    USE_SAVED_MODEL = False
 
     if USE_SAVED_MODEL:
         # Load saved state dict to model
