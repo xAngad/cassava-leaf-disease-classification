@@ -95,12 +95,12 @@ def starting_train(
         
         test_acc, test_loss = evaluate(val_loader, model, loss_fn, epoch, device)
         best_test_acc = max(test_acc, best_test_acc)
-        writer.add_scalar('acc/train', train_acc, epoch)
-        writer.add_scalar('acc/test', test_acc, epoch)
-        writer.add_scalar('loss/train', train_loss, epoch)
-        writer.add_scalar('loss/test', test_loss, epoch)
-        writer.add_scalar('acc/best_test', best_test_acc, epoch)
-        writer.flush()
+        # writer.add_scalar('acc/train', train_acc, epoch)
+        # writer.add_scalar('acc/test', test_acc, epoch)
+        # writer.add_scalar('loss/train', train_loss, epoch)
+        # writer.add_scalar('loss/test', test_loss, epoch)
+        # writer.add_scalar('acc/best_test', best_test_acc, epoch)
+        # writer.flush()
 
 
 def compute_accuracy(outputs, labels):
