@@ -44,12 +44,9 @@ def main():
 
     # Initalize dataset and model. Then train the model!
     full_dataset = StartingDataset('cassava-leaf-disease-classification/train.csv', 'cassava-leaf-disease-classification/train_images')
-    train_size = 192
-    val_size = 64
-    # train_size = int(0.9 * len(full_dataset))
-    # val_size = len(full_dataset) - train_size
-    train_dataset, val_dataset, dummy_dataset = torch.utils.data.random_split(full_dataset, [train_size, val_size, len(full_dataset) - 256])
-    #train_dataset, val_dataset = torch.utils.data.random_split(full_dataset, [train_size, val_size])
+    train_size = int(0.9 * len(full_dataset))
+    val_size = len(full_dataset) - train_size
+    train_dataset, val_dataset = torch.utils.data.random_split(full_dataset, [train_size, val_size])
 
     model = StartingNetwork(3, 5).to(device)
     name = "test run"
