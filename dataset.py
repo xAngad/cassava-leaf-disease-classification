@@ -24,7 +24,7 @@ class StartingDataset(torch.utils.data.Dataset):
         filename = self.csv_file.iloc[index][0]
         image_path = self.image_directory + '/' + filename
         im = Image.open(image_path, 'r')
-        im = im.resize((224, 224))
+        im = im.resize((449, 449))
         im = np.array(im)
         im = torch.from_numpy(im)
 

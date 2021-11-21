@@ -94,9 +94,11 @@ class BuffedTransferNetwork(torch.nn.Module):
         self.fc = nn.Linear(512, output_dim)
 
     def forward(self, x):
+        """ Single Convolutional Layer """
+        x = self.conv(x)
+
         """ ResNet """
-        with torch.no_grad():
-            features = self.model_a(x)
+        features = self.model_a(x)
 
         """ Fully-Connected """
         features = torch.reshape(features, (-1, 512))
